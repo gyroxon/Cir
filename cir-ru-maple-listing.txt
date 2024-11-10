@@ -1,0 +1,40 @@
+restart;            #19.12.2020
+with(plots):
+with(plottools):
+
+A := 5:
+B := 3:
+x := A*cos(t):      #enter your curve by parametric equations
+y := B*sin(t):
+t1 := evalf(0):
+t2 := evalf(4*Pi):
+
+xt := diff(x, t):
+yt := diff(y, t):
++-
+xtt := diff(xt, t):
+ytt := diff(yt, t):
+                    #its evolute
+x1 := simplify(x - yt*(xt^2 + yt^2)/(xt*ytt - xtt*yt));
+y1 := simplify(y + xt*(xt^2 + yt^2)/(xt*ytt - xtt*yt));
+
+                        
+k := simplify(abs(xt*ytt - xtt*yt)/(xt^2 + yt^2)^(3/2));
+
+cir:=proc(a)
+    local p1, p2, X1, Y1, K, p3, c1;
+    p1 := plot([x, y, t = t1 .. t2], color = navy, legend = "эллипс"):
+    p2 := plot([x1, y1, t = t1 .. t2], color = red, legend = "эволюта эллипса"):
+    X1 := evalf(eval(x1, t = a)):
+    Y1 := evalf(eval(y1, t = a)):
+    K  := evalf(eval(k, t = a));
+    p3 := plots:-pointplot([X1, Y1], color = sienna, symbol = solidcircle, symbolsize = 20):
+    c1 := plottools:-circle([X1, Y1], 1/K, color = sienna, legend = "Соприкасающаяся окружность"):
+    plots:-display([p1, p2, p3, c1], scaling = constrained);
+end proc;
+
+
+V := [seq(t1..t2, (t2 - t1)/100)];
+animate(cir, [t], t = V, view = [-7 .. 7, -7 .. 7], tickmarks = [0, 0], scaling = constrained, title = "Эволюта эллипса");
+
+
