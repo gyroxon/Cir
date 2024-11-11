@@ -1,4 +1,4 @@
-restart;            #19.12.2020
+restart;            #19.12.2020 by gyroxon
 with(plots):
 with(plottools):
 
